@@ -1,0 +1,61 @@
+body {
+	max-width: 1000px;
+	position: relative;
+	margin: 0 auto;
+}
+header {
+	position: absolute;
+	top: 4;
+	right: 0;
+	padding: 20px;
+	text-align: right;
+}
+header select {
+	margin-bottom: 20px;
+	font-size: 1.6rem;
+	font-weight: bold;
+	padding: 10px;
+	background: white;
+	border: solid 1px #DDD;
+	cursor: pointer;
+	text-align: right;
+	max-width: 100%;
+}
+header select:hover {
+	background: #DDD;
+}
+header p {
+	font-size: 4rem;
+	font-weight: bold;
+	line-height: 1;
+	color: #CCC;
+}
+#container {
+	margin-top: 140px;
+}
+#container section {
+	padding: 5px 15px;
+}
+
+#container section > section {
+	display: none;
+}
+label {
+	cursor: pointer;
+}
+
+section.intro {
+	font-size: 1rem;
+	background: gray;
+	line-height: 1;
+	color: #CCC;
+	padding: 10px;
+	margin-bottom: 40px;
+}
+section.intro a {
+	color: white;
+	text-decoration: none;
+}
+section.intro a:hover {
+	text-decoration: underline;
+}

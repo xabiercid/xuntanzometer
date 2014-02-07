@@ -1,0 +1,48 @@
+<!doctype html>
+
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Xuntanzometer</title>
+
+	<link rel="stylesheet" href="css/csans.css">
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+	<section class="intro">
+		<p>Bota conta do diñeiro que gastas (ou invistes) cando vos reunides. </br>Primeiro, selecciona o formato da reunión (<a href="">xuntanza ou desxuntanza</a>) e logo cubre as horas e o gasto por hora e concepto.
+		</p>
+	</section>
+	
+	<header>
+		<select id="menu">
+			<option value="js/scheme1.js">Quero facer unha xuntanza</option>
+			<option value="js/scheme2.js">Quero facer unha desxuntanza</option>
+		</select>
+
+		<p id="total_price">0€</p>
+		<p id="total_hours">0h</p>
+	</header>
+
+	<div id="container"></div>
+
+	<script type="template/mustache" data-name="hours">
+	<section>
+		<label><input type="checkbox" name="hours" value="{{hours}}" id="n{{id}}"> {{label}} <small>({{hours}}h)</small></label>
+	</section>
+	</script>
+
+	<script type="template/mustache" data-name="price">
+	<section>
+		<label><input type="checkbox" name="price" value="{{price}}" id="n{{id}}"> {{label}} <small>({{price}}€)</small></label>
+	</section>
+	</script>
+
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/mustache.js"></script>
+	<script type="text/javascript" src="js/scheme.js"></script>
+	<script type="text/javascript" src="js/scripts.js"></script>
+</body>
+</html>
