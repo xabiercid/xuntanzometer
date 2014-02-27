@@ -25,6 +25,11 @@ var Helpers = {
 		$.each(data, function (k, v) {
 			v.id = id++;
 			var name = v.price ? 'price' : 'hours';
+
+			if (v.editable) {
+				name = 'editable-' + name;
+			}
+
 			var $content = $(Mustache.render(Templates[name], v));
 
 			if (v.inputs) {
@@ -36,7 +41,13 @@ var Helpers = {
 	},
 	setHash: function () {
 		var hashes = $(':checked').map(function () {
-			return this.id;
+			var $this = $(this);
+			
+			if ($this.data('editable')) {
+				return $this.attr('id') + '-' + $this.val();
+			}
+
+			return $this.attr('id');
 		}).get().join();
 
 		if (hashes[0] === ',') {
@@ -45,7 +56,8 @@ var Helpers = {
 
 		hashes = $menu.val() + '|' + hashes;
 
-		document.location.hash = hashes;
+		window.history.replaceState(null, null, '#' + hashes);
+		//document.location.hash = hashes;
 	},
 	latestScheme: null,
 	loadScheme: function (url, callback) {
@@ -62,8 +74,27 @@ var Helpers = {
 		document.body.appendChild(script);
 
 		Helpers.latestScheme = script;
+	},
+	update: function () {
+		total_price = 0,
+		total_hours = 0;
+
+		$container.find(':checked').each(function () {
+			var $this = $(this)
+				value = (this.name === 'price') ? parseInt(this.value) : (scheme.config.price_hour * parseInt(this.value)),
+				$subsection = $this.parent().siblings('section');
+
+			total_price += value;
+
+			if (this.name === 'hours') {
+				total_hours += parseFloat(this.value);
+			}
+		});
+
+		$total_price.html(total_price + '€');
+		$total_hours.html(total_hours + 'h');
 	}
-}
+};
 
 $menu.change(function () {
 	Helpers.loadScheme($menu.val(), function () {
@@ -76,35 +107,33 @@ $menu.change(function () {
 		Helpers.setHash();
 
 		$menu.trigger('menuChanged');
-
-		$container.on('click', 'input', function () {
-			var checked = this.checked,
-				value = (this.name === 'price') ? parseInt(this.value) : (scheme.config.price_hour * parseInt(this.value)),
-				$subsection = $(this).parent().siblings('section');
-
-			if (checked) {
-				total_price += value;
-				$subsection.slideDown('normal');
-
-				if (this.name === 'hours') {
-					total_hours += parseFloat(this.value);
-				}
-			} else {
-				total_price -= value;
-				$subsection.slideUp('normal');
-				$subsection.find('> label > :checked').click();
-
-				if (this.name === 'hours') {
-					total_hours -= parseFloat(this.value);
-				}
-			}
-
-			$total_price.html(total_price + '€');
-			$total_hours.html(total_hours + 'h');
-
-			Helpers.setHash();
-		});
 	});
+});
+
+$container.on('change', 'input[type="checkbox"]', function () {
+	var $this = $(this),
+		checked = this.checked,
+		$subsection = $this.parent().siblings('section');
+
+	if (checked) {
+		$subsection.slideDown('normal');
+		$this.parent().next('small').removeClass('hidden');
+	} else {
+		$subsection.slideUp('normal');
+		//$subsection.find('> label > :checked').click();
+		$this.parent().next('small').addClass('hidden');
+	}
+
+	Helpers.update();
+	Helpers.setHash();
+});
+
+$container.on('change', 'input[type="number"]', function () {
+	var $this = $(this);
+	$this.parent().prev('label').children('input').attr('value', $this.val());
+	
+	Helpers.update();
+	Helpers.setHash();
 });
 
 // AutoCheck
@@ -112,10 +141,19 @@ var hash = document.location.hash;
 
 if (hash) {
 	hash = hash.substr(1).split('|', 2);
-	$menu.val(hash[0]).on('menuChanged', function () {
+	$menu.val(hash[0]).one('menuChanged', function () {
 		if (hash[1]) {
-			$(hash[1].split(',').join(',#')).click();
+			var items = hash[1].split(',');
+
+			$.each(items, function (k, item) {
+				if (item.indexOf('-') === -1) {
+					$('#'+item).click();
+				} else {
+					item = item.split('-');
+
+					$('#'+item[0]).val(item[1]).click().parent().next('small').find('input').val(item[1]);
+				}
+			});
 		}
-	});
+	}).change();
 }
-$menu.change();
