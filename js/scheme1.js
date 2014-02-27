@@ -10,6 +10,7 @@ var scheme =
 			"inputs": [
 				{
 					"label": "+1 persoa",
+					"editable": true,
 					"hours": 0.5
 				},
 				{
@@ -18,6 +19,7 @@ var scheme =
 				},
 				{
 					"label": "+3 persoas",
+					"editable": true,
 					"hours": 1.5
 				},
 				{

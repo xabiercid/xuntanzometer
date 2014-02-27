@@ -40,6 +40,10 @@ header p {
 #container section > section {
 	display: none;
 }
+#container input[type="number"] {
+	width: 5em;
+	padding: 2px;
+}
 label {
 	cursor: pointer;
 }
@@ -58,4 +62,8 @@ section.intro a {
 }
 section.intro a:hover {
 	text-decoration: underline;
+}
+
+.hidden {
+	visibility: hidden;
 }

@@ -40,6 +40,20 @@
 	</section>
 	</script>
 
+	<script type="template/mustache" data-name="editable-price">
+	<section>
+		<label><input type="checkbox" name="price" value="{{price}}" id="n{{id}}" data-editable="1"> {{label}}</label>
+		<small class="hidden"><input type="number" name="price" value="{{price}}" id="v{{id}}">€</small>
+	</section>
+	</script>
+
+	<script type="template/mustache" data-name="editable-hours">
+	<section>
+		<label><input type="checkbox" name="hours" value="{{hours}}" id="n{{id}}" data-editable="1"> {{label}}</label>
+		<small class="hidden"><input type="number" name="hours" value="{{hours}}" id="v{{id}}">h</small>
+	</section>
+	</script>
+
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/mustache.js"></script>
 	<script type="text/javascript" src="js/scheme.js"></script>
